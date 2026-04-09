@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Học Cùng VietJack - Nền tảng học tập trực tuyến hàng đầu</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        /* ========== HEADER & NAVIGATION ========== */
+        .top-bar {
+            background: linear-gradient(135deg, #0066cc, #0052a3);
+            color: white;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .top-bar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-info span {
+            margin-right: 20px;
+        }
+
+        .contact-info i {
+            margin-right: 6px;
+        }
+
+        .auth-buttons a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: opacity 0.3s;
+        }
+
+        .auth-buttons a:hover {
+            opacity: 0.8;
+        }
+
+        .main-header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0066cc;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .search-box {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .search-box input {
+            padding: 12px 20px;
+            border: none;
+            width: 300px;
+            outline: none;
+        }
+
+        .search-box button {
+            background: #0066cc;
+            border: none;
+            padding: 0 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Main Navigation */
+        .nav-menu {
+            background: white;
+            border-top: 1px solid #eef2f6;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links li a {
+            display: block;
+            padding: 12px 18px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-radius: 6px;
+        }
+
+        .nav-links li a:hover, .nav-links li a.active {
+            background: #e6f2ff;
+            color: #0066cc;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 30px;
+            margin: 40px auto;
+        }
+
+        /* Bài viết */
+        .post-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .post-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .post-content {
+            padding: 20px;
+        }
+
+        .post-category {
+            color: #0066cc;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .post-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .post-title a {
+            text-decoration: none;
+            color: #2c3e50;
+        }
+
+        .post-excerpt {
+            color: #5a6874;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: #8e9eae;
+        }
+
+        /* Sidebar */
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            border-left: 4px solid #0066cc;
+            padding-left: 12px;
+            margin-bottom: 20px;
+        }
+
+        .trending-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .trending-number {
+            width: 30px;
+            height: 30px;
+            background: #eef2f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #0066cc;
+        }
+
+        /* ========== ADMIN PANEL ========== */
+        .admin-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px auto;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .admin-form input, .admin-form textarea, .admin-form select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            margin-bottom: 15px;
+        }
+
+        .admin-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: #0066cc;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            background: #1a2634;
+            color: #a8c0d6;
+            padding: 50px 0 20px;
+            margin-top: 60px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #2d3e4e;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .search-box input {
+                width: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="container">
+        <div class="contact-info">
+            <span><i class="fas fa-phone-alt"></i> 084 283 4585</span>
+            <span><i class="fas fa-envelope"></i> hotro@vietjack.com</span>
+        </div>
+        <div class="auth-buttons">
+            <a href="#" id="adminLoginBtn"><i class="fas fa-user-shield"></i> Quản trị</a>
+            <a href="#"><i class="fas fa-user-graduate"></i> Đăng nhập</a>
+        </div>
+    </div>
+</div>
+
+<!-- Main Header -->
+<div class="main-header">
+    <div class="container header-flex">
+        <div class="logo">
+            <h1>📚 Học Cùng VietJack</h1>
+            <p>Bài tập - Đề thi - Giáo án</p>
+        </div>
+        <div class="search-box">
+            <input type="text" placeholder="Tìm kiếm bài học, đề thi...">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-menu">
+    <div class="container">
+        <ul class="nav-links">
+            <li><a href="#" class="active">Trang chủ</a></li>
+            <li><a href="#">Lớp 1</a></li>
+            <li><a href="#">Lớp 2</a></li>
+            <li><a href="#">Lớp 3</a></li>
+            <li><a href="#">Lớp 4</a></li>
+            <li><a href="#">Lớp 5</a></li>
+            <li><a href="#">Lớp 6</a></li>
+            <li><a href="#">Lớp 7</a></li>
+            <li><a href="#">Lớp 8</a></li>
+            <li><a href="#">Lớp 9</a></li>
+            <li><a href="#">Lớp 10</a></li>
+            <li><a href="#">Lớp 11</a></li>
+            <li><a href="#">Lớp 12</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="container main-grid" id="mainContent">
+    <!-- Left Column - Posts -->
+    <div class="posts-list" id="postsContainer">
+        <!-- Bài viết sẽ được load từ JavaScript -->
+    </div>
+
+    <!-- Right Column - Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-card">
+            <h3 class="sidebar-title"><i class="fas fa-fire"></i> Bài viết nổi bật</h3>
+            <div id="trendingPosts"></div>
+        </div>
+        <div class="sidebar-card">
+            <h3 class="sidebar-title"><i class="fas fa-video"></i> Video bài giảng</h3>
+            <div style="background:#eef2f6; border-radius:8px; padding:40px; text-align:center;">
+                <i class="fas fa-play-circle" style="font-size:48px; color:#0066cc;"></i>
+                <p style="margin-top:12px">Khoá học trực tuyến chất lượng cao</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Panel (Hidden by default) -->
+<div id="adminPanel" style="display: none;">
+    <div class="container admin-panel">
+        <h2><i class="fas fa-user-shield"></i> Quản trị website</h2>
+        <p>Chào mừng bạn đến với khu vực quản lý bài viết.</p>
+        <hr style="margin: 15px 0;">
+        
+        <form id="postForm" class="admin-form">
+            <input type="hidden" id="postId" value="">
+            <input type="text" id="title" placeholder="Tiêu đề bài viết" required>
+            <textarea id="content" placeholder="Nội dung bài viết" required></textarea>
+            <input type="text" id="imageUrl" placeholder="URL hình ảnh (VD: https://picsum.photos/800/400)" required>
+            <select id="category">
+                <option value="Toán học">Toán học</option>
+                <option value="Ngữ văn">Ngữ văn</option>
+                <option value="Tiếng Anh">Tiếng Anh</option>
+                <option value="Vật lý">Vật lý</option>
+                <option value="Hóa học">Hóa học</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Đăng bài / Cập nhật</button>
+            <button type="button" id="cancelEdit" class="btn btn-warning">Hủy chỉnh sửa</button>
+        </form>
+        
+        <h3 style="margin: 30px 0 15px;">Danh sách bài viết đã đăng</h3>
+        <div id="adminPostsList"></div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container footer-grid">
+        <div>
+            <h3>Về chúng tôi</h3>
+            <p>Hệ thống giáo dục trực tuyến hàng đầu Việt Nam, cung cấp tài liệu học tập cho học sinh từ lớp 1-12.</p>
+        </div>
+        <div>
+            <h3>Liên hệ</h3>
+            <p><i class="fas fa-map-marker-alt"></i> Tầng 2, Tòa G4-G5 Fivestar, số 2 Phạm Văn Bạch, Cầu Giấy, Hà Nội</p>
+        </div>
+        <div>
+            <h3>Kết nối</h3>
+            <p><i class="fab fa-facebook"></i> Facebook: VietJack Official</p>
+            <p><i class="fab fa-youtube"></i> Youtube: VietJack Official</p>
+        </div>
+    </div>
+    <div class="container copyright">
+        <p>&copy; 2025 Học Cùng VietJack. Mọi quyền được bảo lưu.</p>
+    </div>
+</footer>
+
+<script>
+    // ==================== QUẢN LÝ BÀI VIẾT & ADMIN ====================
+    let posts = [];
+    let isAdminMode = false;
+
+    // Load dữ liệu từ localStorage
+    function loadPosts() {
+        const stored = localStorage.getItem('vietjack_posts');
+        if(stored) {
+            posts = JSON.parse(stored);
+        } else {
+            // Dữ liệu mẫu ban đầu
+            posts = [
+                {
+                    id: Date.now() + 1,
+                    title: "Phương pháp giải phương trình bậc hai một ẩn",
+                    content: "Trong chương trình Toán 9, phương trình bậc hai là dạng toán trọng tâm. Bài viết này hướng dẫn chi tiết cách giải và các dạng bài tập từ cơ bản đến nâng cao.",
+                    imageUrl: "https://picsum.photos/id/20/800/400",
+                    category: "Toán học",
+                    date: "2025-02-20"
+                },
+                {
+                    id: Date.now() + 2,
+                    title: "Phân tích bài thơ 'Đồng chí' - Chính Hữu",
+                    content: "Bài thơ 'Đồng chí' của Chính Hữu đã khắc họa thành công tình đồng chí, đồng đội thiêng liêng giữa những người lính trong những năm tháng kháng chiến gian khổ.",
+                    imageUrl: "https://picsum.photos/id/30/800/400",
+                    category: "Ngữ văn",
+                    date: "2025-02-18"
+                },
+                {
+                    id: Date.now() + 3,
+                    title: "12 thì trong tiếng Anh - Công thức và dấu hiệu nhận biết",
+                    content: "Tổng hợp đầy đủ 12 thì trong tiếng Anh: Công thức, cách dùng và dấu hiệu nhận biết giúp bạn chinh phục mọi bài tập ngữ pháp.",
+                    imageUrl: "https://picsum.photos/id/26/800/400",
+                    category: "Tiếng Anh",
+                    date: "2025-02-15"
+                }
+            ];
+            savePosts();
+        }
+        renderPosts();
+    }
+
+    function savePosts() {
+        localStorage.setItem('vietjack_posts', JSON.stringify(posts));
+        renderPosts();
+    }
+
+    function renderPosts() {
+        // Hiển thị bài viết trên trang chủ
+        const postsContainer = document.getElementById('postsContainer');
+        if(postsContainer) {
+            if(posts.length === 0) {
+                postsContainer.innerHTML = '<div class="post-card"><div class="post-content"><p>Chưa có bài viết nào.</p></div></div>';
+            } else {
+                postsContainer.innerHTML = posts.map(post => `
+                    <article class="post-card">
+                        <img class="post-image" src="${post.imageUrl}" alt="${post.title}" onerror="this.src='https://picsum.photos/800/400'">
+                        <div class="post-content">
+                            <div class="post-category">${post.category}</div>
+                            <h2 class="post-title"><a href="#">${post.title}</a></h2>
+                            <div class="post-excerpt">${post.content.substring(0, 150)}...</div>
+                            <div class="post-meta">
+                                <span><i class="far fa-calendar-alt"></i> ${post.date}</span>
+                                <span><i class="far fa-eye"></i> 1,234 lượt xem</span>
+                            </div>
+                        </div>
+                    </article>
+                `).join('');
+            }
+        }
+
+        // Hiển thị bài viết nổi bật
+        const trendingContainer = document.getElementById('trendingPosts');
+        if(trendingContainer && posts.length > 0) {
+            trendingContainer.innerHTML = posts.slice(0, 4).map((post, idx) => `
+                <div class="trending-item">
+                    <div class="trending-number">${idx + 1}</div>
+                    <div><strong>${post.title}</strong><br><small>${post.category}</small></div>
+                </div>
+            `).join('');
+        }
+
+        // Hiển thị trong admin nếu đang ở chế độ admin
+        if(isAdminMode) {
+            const adminList = document.getElementById('adminPostsList');
+            if(adminList) {
+                if(posts.length === 0) {
+                    adminList.innerHTML = '<p>Chưa có bài viết nào. Hãy đăng bài mới.</p>';
+                } else {
+                    adminList.innerHTML = posts.map(post => `
+                        <div style="border:1px solid #ddd; margin-bottom:15px; padding:15px; border-radius:8px;">
+                            <h4>${post.title}</h4>
+                            <p>${post.content.substring(0, 100)}...</p>
+                            <button onclick="editPost(${post.id})" class="btn btn-warning" style="margin-right:10px;">Sửa</button>
+                            <button onclick="deletePost(${post.id})" class="btn btn-danger">Xóa</button>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+    }
+
+    // Hàm xử lý form đăng bài
+    document.getElementById('postForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const id = document.getElementById('postId').value;
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+        const imageUrl = document.getElementById('imageUrl').value;
+        const category = document.getElementById('category').value;
+        const date = new Date().toISOString().slice(0,10);
+        
+        if(id) {
+            // Cập nhật bài viết
+            const index = posts.findIndex(p => p.id == id);
+            if(index !== -1) {
+                posts[index] = { ...posts[index], title, content, imageUrl, category, date };
+            }
+        } else {
+            // Thêm bài viết mới
+            const newPost = {
+                id: Date.now(),
+                title,
+                content,
+                imageUrl,
+                category,
+                date
+            };
+            posts.unshift(newPost);
+        }
+        savePosts();
+        resetForm();
+        alert(id ? 'Cập nhật bài viết thành công!' : 'Đăng bài viết thành công!');
+    });
+    
+    function resetForm() {
+        document.getElementById('postId').value = '';
+        document.getElementById('title').value = '';
+        document.getElementById('content').value = '';
+        document.getElementById('imageUrl').value = '';
+        document.getElementById('category').value = 'Toán học';
+    }
+    
+    window.editPost = function(id) {
+        const post = posts.find(p => p.id == id);
+        if(post) {
+            document.getElementById('postId').value = post.id;
+            document.getElementById('title').value = post.title;
+            document.getElementById('content').value = post.content;
+            document.getElementById('imageUrl').value = post.imageUrl;
+            document.getElementById('category').value = post.category;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+    
+    window.deletePost = function(id) {
+        if(confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
+            posts = posts.filter(p => p.id != id);
+            savePosts();
+            alert('Đã xóa bài viết!');
+        }
+    }
+    
+    document.getElementById('cancelEdit')?.addEventListener('click', resetForm);
+    
+    // Admin Login/Logout
+    function showAdminPanel() {
+        isAdminMode = true;
+        document.getElementById('adminPanel').style.display = 'block';
+        document.getElementById('mainContent').style.display = 'none';
+        renderPosts(); // Re
