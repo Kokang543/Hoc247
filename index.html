@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Học Cùng VietJack - Nền tảng học tập trực tuyến hàng đầu</title>
+    <title>Học Cùng VietJack - Nền tảng học tập trực tuyến</title>
     <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -21,7 +21,7 @@
             line-height: 1.6;
         }
 
-        /* ========== HEADER & NAVIGATION ========== */
+        /* Header & Top bar */
         .top-bar {
             background: linear-gradient(135deg, #0066cc, #0052a3);
             color: white;
@@ -55,10 +55,7 @@
             text-decoration: none;
             margin-left: 20px;
             transition: opacity 0.3s;
-        }
-
-        .auth-buttons a:hover {
-            opacity: 0.8;
+            cursor: pointer;
         }
 
         .main-header {
@@ -110,22 +107,24 @@
             cursor: pointer;
         }
 
-        /* Main Navigation */
+        /* Navigation */
         .nav-menu {
             background: white;
             border-top: 1px solid #eef2f6;
             border-bottom: 1px solid #eef2f6;
+            overflow-x: auto;
+            white-space: nowrap;
         }
 
         .nav-links {
-            display: flex;
+            display: inline-flex;
             list-style: none;
             gap: 8px;
-            flex-wrap: wrap;
+            padding: 0 20px;
         }
 
         .nav-links li a {
-            display: block;
+            display: inline-block;
             padding: 12px 18px;
             text-decoration: none;
             color: #333;
@@ -139,7 +138,7 @@
             color: #0066cc;
         }
 
-        /* ========== MAIN CONTENT ========== */
+        /* Main content */
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 320px;
@@ -147,7 +146,6 @@
             margin: 40px auto;
         }
 
-        /* Bài viết */
         .post-card {
             background: white;
             border-radius: 12px;
@@ -240,7 +238,7 @@
             color: #0066cc;
         }
 
-        /* ========== ADMIN PANEL ========== */
+        /* Admin panel */
         .admin-panel {
             background: white;
             border-radius: 12px;
@@ -261,6 +259,16 @@
         .admin-form textarea {
             min-height: 150px;
             resize: vertical;
+        }
+
+        .image-preview {
+            margin: 10px 0;
+            max-width: 200px;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            border-radius: 8px;
         }
 
         .btn {
@@ -287,7 +295,12 @@
             color: #333;
         }
 
-        /* ========== FOOTER ========== */
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        /* Footer */
         footer {
             background: #1a2634;
             color: #a8c0d6;
@@ -317,6 +330,12 @@
                 width: 180px;
             }
         }
+
+        /* Filter active */
+        .filter-active {
+            background: #0066cc !important;
+            color: white !important;
+        }
     </style>
 </head>
 <body>
@@ -329,8 +348,8 @@
             <span><i class="fas fa-envelope"></i> hotro@vietjack.com</span>
         </div>
         <div class="auth-buttons">
-            <a href="#" id="adminLoginBtn"><i class="fas fa-user-shield"></i> Quản trị</a>
-            <a href="#"><i class="fas fa-user-graduate"></i> Đăng nhập</a>
+            <a id="adminLoginBtn"><i class="fas fa-user-shield"></i> Quản trị</a>
+            <a id="logoutAdminBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> Thoát Admin</a>
         </div>
     </div>
 </div>
@@ -343,41 +362,36 @@
             <p>Bài tập - Đề thi - Giáo án</p>
         </div>
         <div class="search-box">
-            <input type="text" placeholder="Tìm kiếm bài học, đề thi...">
-            <button><i class="fas fa-search"></i></button>
+            <input type="text" id="searchInput" placeholder="Tìm kiếm bài học, đề thi...">
+            <button id="searchBtn"><i class="fas fa-search"></i></button>
         </div>
     </div>
 </div>
 
-<!-- Navigation -->
+<!-- Navigation (Lớp) -->
 <div class="nav-menu">
-    <div class="container">
-        <ul class="nav-links">
-            <li><a href="#" class="active">Trang chủ</a></li>
-            <li><a href="#">Lớp 1</a></li>
-            <li><a href="#">Lớp 2</a></li>
-            <li><a href="#">Lớp 3</a></li>
-            <li><a href="#">Lớp 4</a></li>
-            <li><a href="#">Lớp 5</a></li>
-            <li><a href="#">Lớp 6</a></li>
-            <li><a href="#">Lớp 7</a></li>
-            <li><a href="#">Lớp 8</a></li>
-            <li><a href="#">Lớp 9</a></li>
-            <li><a href="#">Lớp 10</a></li>
-            <li><a href="#">Lớp 11</a></li>
-            <li><a href="#">Lớp 12</a></li>
+    <div class="container" style="padding:0;">
+        <ul class="nav-links" id="classFilter">
+            <li><a href="#" data-class="all" class="active">Tất cả</a></li>
+            <li><a href="#" data-class="1">Lớp 1</a></li>
+            <li><a href="#" data-class="2">Lớp 2</a></li>
+            <li><a href="#" data-class="3">Lớp 3</a></li>
+            <li><a href="#" data-class="4">Lớp 4</a></li>
+            <li><a href="#" data-class="5">Lớp 5</a></li>
+            <li><a href="#" data-class="6">Lớp 6</a></li>
+            <li><a href="#" data-class="7">Lớp 7</a></li>
+            <li><a href="#" data-class="8">Lớp 8</a></li>
+            <li><a href="#" data-class="9">Lớp 9</a></li>
+            <li><a href="#" data-class="10">Lớp 10</a></li>
+            <li><a href="#" data-class="11">Lớp 11</a></li>
+            <li><a href="#" data-class="12">Lớp 12</a></li>
         </ul>
     </div>
 </div>
 
 <!-- Main Content -->
 <div class="container main-grid" id="mainContent">
-    <!-- Left Column - Posts -->
-    <div class="posts-list" id="postsContainer">
-        <!-- Bài viết sẽ được load từ JavaScript -->
-    </div>
-
-    <!-- Right Column - Sidebar -->
+    <div class="posts-list" id="postsContainer"></div>
     <div class="sidebar">
         <div class="sidebar-card">
             <h3 class="sidebar-title"><i class="fas fa-fire"></i> Bài viết nổi bật</h3>
@@ -393,18 +407,23 @@
     </div>
 </div>
 
-<!-- Admin Panel (Hidden by default) -->
+<!-- Admin Panel (ẩn ban đầu) -->
 <div id="adminPanel" style="display: none;">
     <div class="container admin-panel">
         <h2><i class="fas fa-user-shield"></i> Quản trị website</h2>
-        <p>Chào mừng bạn đến với khu vực quản lý bài viết.</p>
+        <p>Chào mừng Admin! Bạn có thể thêm/sửa/xóa bài viết.</p>
         <hr style="margin: 15px 0;">
         
         <form id="postForm" class="admin-form">
             <input type="hidden" id="postId" value="">
             <input type="text" id="title" placeholder="Tiêu đề bài viết" required>
             <textarea id="content" placeholder="Nội dung bài viết" required></textarea>
-            <input type="text" id="imageUrl" placeholder="URL hình ảnh (VD: https://picsum.photos/800/400)" required>
+            
+            <label>Ảnh đại diện:</label>
+            <input type="file" id="imageFile" accept="image/*">
+            <input type="text" id="imageUrl" placeholder="Hoặc nhập URL ảnh" style="margin-top:5px;">
+            <div class="image-preview" id="imagePreview"></div>
+            
             <select id="category">
                 <option value="Toán học">Toán học</option>
                 <option value="Ngữ văn">Ngữ văn</option>
@@ -412,11 +431,25 @@
                 <option value="Vật lý">Vật lý</option>
                 <option value="Hóa học">Hóa học</option>
             </select>
+            <select id="classLevel">
+                <option value="1">Lớp 1</option>
+                <option value="2">Lớp 2</option>
+                <option value="3">Lớp 3</option>
+                <option value="4">Lớp 4</option>
+                <option value="5">Lớp 5</option>
+                <option value="6">Lớp 6</option>
+                <option value="7">Lớp 7</option>
+                <option value="8">Lớp 8</option>
+                <option value="9">Lớp 9</option>
+                <option value="10">Lớp 10</option>
+                <option value="11">Lớp 11</option>
+                <option value="12">Lớp 12</option>
+            </select>
             <button type="submit" class="btn btn-primary">Đăng bài / Cập nhật</button>
             <button type="button" id="cancelEdit" class="btn btn-warning">Hủy chỉnh sửa</button>
         </form>
         
-        <h3 style="margin: 30px 0 15px;">Danh sách bài viết đã đăng</h3>
+        <h3 style="margin: 30px 0 15px;">Danh sách bài viết</h3>
         <div id="adminPostsList"></div>
     </div>
 </div>
@@ -444,9 +477,11 @@
 </footer>
 
 <script>
-    // ==================== QUẢN LÝ BÀI VIẾT & ADMIN ====================
+    // ==================== QUẢN LÝ BÀI VIẾT ====================
     let posts = [];
     let isAdminMode = false;
+    let currentFilterClass = 'all';
+    let currentSearchKeyword = '';
 
     // Load dữ liệu từ localStorage
     function loadPosts() {
@@ -454,164 +489,135 @@
         if(stored) {
             posts = JSON.parse(stored);
         } else {
-            // Dữ liệu mẫu ban đầu
+            // Dữ liệu mẫu
             posts = [
                 {
                     id: Date.now() + 1,
-                    title: "Phương pháp giải phương trình bậc hai một ẩn",
+                    title: "Phương pháp giải phương trình bậc hai",
                     content: "Trong chương trình Toán 9, phương trình bậc hai là dạng toán trọng tâm. Bài viết này hướng dẫn chi tiết cách giải và các dạng bài tập từ cơ bản đến nâng cao.",
                     imageUrl: "https://picsum.photos/id/20/800/400",
                     category: "Toán học",
+                    classLevel: "9",
                     date: "2025-02-20"
                 },
                 {
                     id: Date.now() + 2,
                     title: "Phân tích bài thơ 'Đồng chí' - Chính Hữu",
-                    content: "Bài thơ 'Đồng chí' của Chính Hữu đã khắc họa thành công tình đồng chí, đồng đội thiêng liêng giữa những người lính trong những năm tháng kháng chiến gian khổ.",
+                    content: "Bài thơ 'Đồng chí' của Chính Hữu đã khắc họa thành công tình đồng chí, đồng đội thiêng liêng giữa những người lính.",
                     imageUrl: "https://picsum.photos/id/30/800/400",
                     category: "Ngữ văn",
+                    classLevel: "9",
                     date: "2025-02-18"
                 },
                 {
                     id: Date.now() + 3,
-                    title: "12 thì trong tiếng Anh - Công thức và dấu hiệu nhận biết",
+                    title: "12 thì trong tiếng Anh - Công thức và dấu hiệu",
                     content: "Tổng hợp đầy đủ 12 thì trong tiếng Anh: Công thức, cách dùng và dấu hiệu nhận biết giúp bạn chinh phục mọi bài tập ngữ pháp.",
                     imageUrl: "https://picsum.photos/id/26/800/400",
                     category: "Tiếng Anh",
+                    classLevel: "10",
                     date: "2025-02-15"
                 }
             ];
             savePosts();
         }
-        renderPosts();
+        renderAll();
     }
 
     function savePosts() {
         localStorage.setItem('vietjack_posts', JSON.stringify(posts));
+        renderAll();
+    }
+
+    function renderAll() {
         renderPosts();
+        renderTrending();
+        if(isAdminMode) renderAdminList();
     }
 
     function renderPosts() {
-        // Hiển thị bài viết trên trang chủ
-        const postsContainer = document.getElementById('postsContainer');
-        if(postsContainer) {
-            if(posts.length === 0) {
-                postsContainer.innerHTML = '<div class="post-card"><div class="post-content"><p>Chưa có bài viết nào.</p></div></div>';
-            } else {
-                postsContainer.innerHTML = posts.map(post => `
-                    <article class="post-card">
-                        <img class="post-image" src="${post.imageUrl}" alt="${post.title}" onerror="this.src='https://picsum.photos/800/400'">
-                        <div class="post-content">
-                            <div class="post-category">${post.category}</div>
-                            <h2 class="post-title"><a href="#">${post.title}</a></h2>
-                            <div class="post-excerpt">${post.content.substring(0, 150)}...</div>
-                            <div class="post-meta">
-                                <span><i class="far fa-calendar-alt"></i> ${post.date}</span>
-                                <span><i class="far fa-eye"></i> 1,234 lượt xem</span>
-                            </div>
-                        </div>
-                    </article>
-                `).join('');
-            }
+        const container = document.getElementById('postsContainer');
+        if(!container) return;
+        
+        let filtered = [...posts];
+        // Lọc theo lớp
+        if(currentFilterClass !== 'all') {
+            filtered = filtered.filter(p => p.classLevel == currentFilterClass);
         }
-
-        // Hiển thị bài viết nổi bật
+        // Lọc theo từ khóa
+        if(currentSearchKeyword.trim() !== '') {
+            const kw = currentSearchKeyword.toLowerCase();
+            filtered = filtered.filter(p => p.title.toLowerCase().includes(kw) || p.content.toLowerCase().includes(kw));
+        }
+        
+        if(filtered.length === 0) {
+            container.innerHTML = '<div class="post-card"><div class="post-content"><p>Không có bài viết nào phù hợp.</p></div></div>';
+            return;
+        }
+        
+        container.innerHTML = filtered.map(post => `
+            <article class="post-card">
+                <img class="post-image" src="${post.imageUrl}" alt="${post.title}" onerror="this.src='https://picsum.photos/800/400'">
+                <div class="post-content">
+                    <div class="post-category">${post.category} - Lớp ${post.classLevel}</div>
+                    <h2 class="post-title"><a href="#">${escapeHtml(post.title)}</a></h2>
+                    <div class="post-excerpt">${escapeHtml(post.content.substring(0, 150))}...</div>
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar-alt"></i> ${post.date}</span>
+                        <span><i class="far fa-eye"></i> 1,234 lượt xem</span>
+                    </div>
+                </div>
+            </article>
+        `).join('');
+    }
+    
+    function renderTrending() {
         const trendingContainer = document.getElementById('trendingPosts');
         if(trendingContainer && posts.length > 0) {
-            trendingContainer.innerHTML = posts.slice(0, 4).map((post, idx) => `
+            const trendingPosts = [...posts].sort((a,b) => b.id - a.id).slice(0, 4);
+            trendingContainer.innerHTML = trendingPosts.map((post, idx) => `
                 <div class="trending-item">
                     <div class="trending-number">${idx + 1}</div>
-                    <div><strong>${post.title}</strong><br><small>${post.category}</small></div>
+                    <div><strong>${escapeHtml(post.title)}</strong><br><small>Lớp ${post.classLevel}</small></div>
                 </div>
             `).join('');
         }
-
-        // Hiển thị trong admin nếu đang ở chế độ admin
-        if(isAdminMode) {
-            const adminList = document.getElementById('adminPostsList');
-            if(adminList) {
-                if(posts.length === 0) {
-                    adminList.innerHTML = '<p>Chưa có bài viết nào. Hãy đăng bài mới.</p>';
-                } else {
-                    adminList.innerHTML = posts.map(post => `
-                        <div style="border:1px solid #ddd; margin-bottom:15px; padding:15px; border-radius:8px;">
-                            <h4>${post.title}</h4>
-                            <p>${post.content.substring(0, 100)}...</p>
-                            <button onclick="editPost(${post.id})" class="btn btn-warning" style="margin-right:10px;">Sửa</button>
-                            <button onclick="deletePost(${post.id})" class="btn btn-danger">Xóa</button>
-                        </div>
-                    `).join('');
-                }
+    }
+    
+    function renderAdminList() {
+        const adminList = document.getElementById('adminPostsList');
+        if(adminList) {
+            if(posts.length === 0) {
+                adminList.innerHTML = '<p>Chưa có bài viết. Hãy đăng bài mới.</p>';
+            } else {
+                adminList.innerHTML = posts.map(post => `
+                    <div style="border:1px solid #ddd; margin-bottom:15px; padding:15px; border-radius:8px;">
+                        <h4>${escapeHtml(post.title)}</h4>
+                        <p>Lớp ${post.classLevel} - ${post.category}</p>
+                        <button onclick="editPost(${post.id})" class="btn btn-warning" style="margin-right:10px;">Sửa</button>
+                        <button onclick="deletePost(${post.id})" class="btn btn-danger">Xóa</button>
+                    </div>
+                `).join('');
             }
         }
     }
-
-    // Hàm xử lý form đăng bài
-    document.getElementById('postForm')?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const id = document.getElementById('postId').value;
-        const title = document.getElementById('title').value;
-        const content = document.getElementById('content').value;
-        const imageUrl = document.getElementById('imageUrl').value;
-        const category = document.getElementById('category').value;
-        const date = new Date().toISOString().slice(0,10);
-        
-        if(id) {
-            // Cập nhật bài viết
-            const index = posts.findIndex(p => p.id == id);
-            if(index !== -1) {
-                posts[index] = { ...posts[index], title, content, imageUrl, category, date };
-            }
-        } else {
-            // Thêm bài viết mới
-            const newPost = {
-                id: Date.now(),
-                title,
-                content,
-                imageUrl,
-                category,
-                date
-            };
-            posts.unshift(newPost);
-        }
-        savePosts();
-        resetForm();
-        alert(id ? 'Cập nhật bài viết thành công!' : 'Đăng bài viết thành công!');
-    });
     
-    function resetForm() {
-        document.getElementById('postId').value = '';
-        document.getElementById('title').value = '';
-        document.getElementById('content').value = '';
-        document.getElementById('imageUrl').value = '';
-        document.getElementById('category').value = 'Toán học';
+    // Helper escape HTML
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
     }
     
-    window.editPost = function(id) {
-        const post = posts.find(p => p.id == id);
-        if(post) {
-            document.getElementById('postId').value = post.id;
-            document.getElementById('title').value = post.title;
-            document.getElementById('content').value = post.content;
-            document.getElementById('imageUrl').value = post.imageUrl;
-            document.getElementById('category').value = post.category;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
-    
-    window.deletePost = function(id) {
-        if(confirm('Bạn có chắc chắn muốn xóa bài viết này?')) {
-            posts = posts.filter(p => p.id != id);
-            savePosts();
-            alert('Đã xóa bài viết!');
-        }
-    }
-    
-    document.getElementById('cancelEdit')?.addEventListener('click', resetForm);
-    
-    // Admin Login/Logout
-    function showAdminPanel() {
-        isAdminMode = true;
-        document.getElementById('adminPanel').style.display = 'block';
-        document.getElementById('mainContent').style.display = 'none';
-        renderPosts(); // Re
+    // Xử lý upload ảnh (base64)
+    document.getElementById('imageFile')?.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if(file) {
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                const base64 = ev.target.result;
+                document.getElementById('imageUrl').value = base64;
+                const preview = document.getElementByI
